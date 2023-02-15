@@ -7,23 +7,23 @@ from datetime import datetime
 
 def get_date(): return strftime("%a, %d %b %Y %H:%M:%S GMT", gmtime())
 
-#This will return last modified time of given web page url
 def get_last_modified(url):
-    #page = {'url': "", 'date': "", 'last_modified': ""}
+    page = {'url': "", 'date': "", 'last_modified': ""}
     result = urlparse(url)
-    if True if [result.scheme, result.netloc, result.path] else False:
+    if [result.scheme, result.netloc, result.path]:
         header = requests.head(url).headers
         if 'Last-Modified' in header:
-            return header['Last-Modified']
-        print("Data is not available")
-        return -1
-    else:
-        return -1
-#Demonstration of function call
+            page["url"] = url
+            page["date"] = get_date()
+            page["last_modified"] = header['Last-Modified']
+            return json.dumps(page, indent = 2)
+    raise ValueError
+
 if __name__ == '__main__':
-#    try:
+    try:
         url = sys.argv[1]
-        print(get_date())
         print(get_last_modified(url))
-#    except Exception as e:
+    except IndexError: 
         print("Please provide proper url as a first argument.")
+    except ValueError:
+        print("Get url last modified info error.")
