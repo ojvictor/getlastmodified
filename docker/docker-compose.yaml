@@ -1,0 +1,31 @@
+version: '3'
+ 
+services:
+  db:
+    image: mariadb:latest
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: T1Cw3b
+      MYSQL_DATABASE: ticweb_a11y
+      MYSQL_USER: ticweb
+      MYSQL_PASSWORD: K4RN4Vu
+    ports:
+      - "6033:3306"
+    command: --init-file /docker-entrypoint-initdb.d/grant.sql
+    volumes:
+      - ./db/storage:/var/lib/mysql
+      - ./db/init/grant.sql:/docker-entrypoint-initdb.d/grant.sql
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
