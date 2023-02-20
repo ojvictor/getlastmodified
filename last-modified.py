@@ -12,7 +12,6 @@ def convert_str2date(strdate):
 def get_date(): return strftime("%Y-%m-%d", gmtime())
 
 def get_last_modified(url):
-    #page = {'url': "", 'date': "", 'last_modified': "", 'error': False}
     page = {}
     try: 
         result = urlparse(url)
@@ -29,7 +28,6 @@ def get_last_modified(url):
         page["error"] = 1
     
     return page
-    #return json.dumps(page, indent = 2, default = str)
 if __name__ == '__main__':
     try:
         url = sys.argv[1]
