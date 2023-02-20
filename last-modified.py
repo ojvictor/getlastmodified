@@ -5,7 +5,10 @@ from time import gmtime, strftime
 from urllib.parse import urlparse
 from datetime import datetime
 
-def get_date(): return strftime("%a, %d %b %Y %H:%M:%S GMT", gmtime())
+def convert_str2date(strdate):
+    return datetime.strptime(strdate.replace(' GMT', ''), "%a, %d %b %Y %H:%M:%S").date()
+
+def get_date(): return strftime("%Y-%m-%d", gmtime())
 
 def get_last_modified(url):
     page = {'url': "", 'date': "", 'last_modified': "", 'error': False}
@@ -16,7 +19,7 @@ def get_last_modified(url):
             if 'Last-Modified' in header:
                 page["url"] = url
                 page["date"] = get_date()
-                page["last_modified"] = header['Last-Modified']
+                page["last_modified"] = convert_str2date(header['Last-Modified'])
                 page["error"] = False
     except Exception:
         page["url"] = url
@@ -24,7 +27,7 @@ def get_last_modified(url):
         page["last_modified"] = None
         page["error"] = True
         
-    return json.dumps(page, indent = 2)
+    return json.dumps(page, indent = 2, default = str)
 if __name__ == '__main__':
     try:
         url = sys.argv[1]
