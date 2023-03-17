@@ -21,7 +21,7 @@ def check_http(url):
         url = 'http://' + url
 
     return url
-    
+
 
 def get_last_modified(url):
     page = {}
@@ -75,7 +75,7 @@ if __name__ == '__main__':
             add_page = "INSERT INTO %s ( %s ) VALUES ( %s );" % ('pages', columns, values)
             #print(add_page)
 
-            cursor.execute(add_page, page.values())
+            cursor.execute(add_page)
             cnx.commit()
 
         cursor.close()
